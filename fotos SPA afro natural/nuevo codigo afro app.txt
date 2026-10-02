@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a1a1a">
+<title>AFRO NATURAL - Peluqueria y Estetica Integral</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold-primary:#b88917;--gold-light:#ffd492;--gold-medium:#ad8339;--gold-pale:#ebcc90;--gold-warm:#aa7738;--gold-deep:#866042;--black:#1a1a1a;--black-light:#2d2d2d;--white:#faf8f5;--success:#4a7c59;--error:#8b3a3a;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;}
+.nav-bar{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(26,26,26,0.95);backdrop-filter:blur(20px);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid rgba(184,137,23,0.2);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--gold-primary);letter-spacing:1px;}
+.nav-logo span{color:var(--gold-pale);font-size:0.7rem;display:block;font-weight:400;letter-spacing:2px;margin-top:-2px;}
+.nav-menu-btn{width:40px;height:40px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;cursor:pointer;background:none;border:none;}
+.nav-menu-btn span{display:block;width:24px;height:2px;background:var(--gold-primary);transition:all 0.3s;}
+.nav-menu-btn.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.nav-menu-btn.active span:nth-child(2){opacity:0;}
+.nav-menu-btn.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+.nav-overlay{position:fixed;top:60px;left:0;right:0;bottom:0;background:rgba(26,26,26,0.98);z-index:999;display:none;flex-direction:column;padding:30px 20px;gap:8px;}
+.nav-overlay.active{display:flex;}
+.nav-item{padding:18px 20px;font-size:1.1rem;font-weight:500;color:var(--gold-pale);border-bottom:1px solid rgba(184,137,23,0.1);cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:15px;}
+.nav-item:hover,.nav-item.active{color:var(--gold-primary);background:rgba(184,137,23,0.08);border-radius:12px;border-bottom:none;}
+.nav-icon{width:24px;height:24px;opacity:0.7;}
+.page{display:none;padding-top:60px;min-height:100vh;animation:fadeIn 0.4s;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.hero{position:relative;height:85vh;min-height:600px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;overflow:hidden;}
+.hero-bg{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#1a1a1a 0%,#2d1f0f 50%,#1a1a1a 100%);z-index:0;}
+.hero-pattern{position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(circle at 20% 80%,rgba(184,137,23,0.15) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(255,212,146,0.08) 0%,transparent 50%);z-index:1;}
+.hero-content{position:relative;z-index:2;}
+.hero-badge{display:inline-block;padding:8px 20px;background:rgba(184,137,23,0.15);border:1px solid rgba(184,137,23,0.3);border-radius:50px;font-size:0.75rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-primary);margin-bottom:25px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:var(--gold-pale);line-height:1.1;margin-bottom:15px;}
+.hero h1 .accent{color:var(--gold-primary);display:block;font-size:1.2rem;font-weight:400;letter-spacing:4px;margin-top:10px;font-family:'Inter',sans-serif;}
+.hero-subtitle{font-size:1rem;color:var(--gold-pale);opacity:0.8;max-width:320px;margin:0 auto 30px;line-height:1.6;}
+.hero-location{display:flex;align-items:center;justify-content:center;gap:8px;font-size:0.85rem;color:var(--gold-medium);margin-bottom:35px;opacity:0.9;}
+.hero-buttons{display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px;margin:0 auto;}
+.btn{padding:16px 28px;border-radius:14px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all 0.3s;border:none;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;}
+.btn-primary{background:linear-gradient(135deg,var(--gold-primary),var(--gold-warm));color:var(--black);box-shadow:0 4px 20px rgba(184,137,23,0.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 30px rgba(184,137,23,0.4);}
+.btn-secondary{background:transparent;color:var(--gold-pale);border:1.5px solid rgba(184,137,23,0.4);}
+.btn-secondary:hover{background:rgba(184,137,23,0.1);border-color:var(--gold-primary);}
+.hero-scroll{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:2;animation:bounce 2s infinite;}
+.hero-scroll svg{width:24px;height:24px;color:var(--gold-primary);}
+.hero-logo-wrap{margin-bottom:22px;display:flex;justify-content:center;align-items:center;}
+.hero-logo-img{width:clamp(180px,55vw,320px);height:auto;display:block;filter:drop-shadow(0 0 18px rgba(184,137,23,0.45)) drop-shadow(0 2px 8px rgba(0,0,0,0.6));mix-blend-mode:normal;}
+.hero-welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;margin-bottom:18px;will-change:transform;}
+.hero-welcome-line{font-family:'Playfair Display',serif;font-weight:700;color:var(--gold-pale);text-align:center;line-height:1.15;text-shadow:0 2px 20px rgba(0,0,0,0.7),0 0 40px rgba(184,137,23,0.2);letter-spacing:2px;}
+.hero-welcome-line.es{font-size:clamp(1.8rem,7vw,3rem);color:var(--gold-light);animation:welcomeFadeIn 1.2s ease both;}
+.hero-welcome-line.en{font-size:clamp(1.5rem,6vw,2.4rem);color:var(--gold-pale);opacity:0.9;animation:welcomeFadeIn 1.2s ease 0.3s both;}
+.hero-welcome-line.ar{font-size:clamp(1.4rem,5.5vw,2.2rem);color:var(--gold-medium);opacity:0.85;direction:rtl;font-family:'Playfair Display','Georgia',serif;animation:welcomeFadeIn 1.2s ease 0.6s both;}
+.hero-welcome-sep{color:var(--gold-primary);opacity:0.4;font-size:1.2rem;letter-spacing:8px;animation:welcomeFadeIn 1.2s ease 0.9s both;}
+@keyframes welcomeFadeIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes bounce{0%,20%,50%,80%,100%{transform:translateX(-50%) translateY(0);}40%{transform:translateX(-50%) translateY(-10px);}60%{transform:translateX(-50%) translateY(-5px);}}
+.section{padding:50px 20px;}
+.section-header{text-align:center;margin-bottom:35px;}
+.section-label{font-size:0.75rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-primary);margin-bottom:10px;}
+.section-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-pale);margin-bottom:12px;}
+.section-desc{font-size:0.9rem;color:var(--gold-pale);opacity:0.7;max-width:300px;margin:0 auto;line-height:1.6;}
+.specialty-banner{background:linear-gradient(135deg,rgba(184,137,23,0.1),rgba(134,96,66,0.1));border:1px solid rgba(184,137,23,0.2);border-radius:20px;padding:30px 25px;margin:0 20px 40px;text-align:center;}
+.specialty-banner h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold-primary);margin-bottom:12px;}
+.specialty-banner p{font-size:0.9rem;color:var(--gold-pale);opacity:0.85;line-height:1.7;}
+.specialty-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px;}
+.specialty-tag{padding:6px 14px;background:rgba(184,137,23,0.15);border:1px solid rgba(184,137,23,0.25);border-radius:50px;font-size:0.75rem;color:var(--gold-pale);font-weight:500;}
+.services-grid{display:grid;grid-template-columns:1fr;gap:16px;padding:0 20px;}
+.service-card{background:linear-gradient(145deg,var(--black-light),rgba(45,45,45,0.8));border:1px solid rgba(184,137,23,0.15);border-radius:20px;overflow:hidden;transition:all 0.3s;cursor:pointer;}
+.service-card:hover{border-color:rgba(184,137,23,0.4);transform:translateY(-3px);box-shadow:0 10px 40px rgba(0,0,0,0.3);}
+.service-img{width:100%;height:180px;object-fit:cover;display:block;}
+.service-info{padding:20px;}
+.service-name{font-size:1.1rem;font-weight:600;color:var(--gold-pale);margin-bottom:8px;}
+.service-meta{display:flex;align-items:center;gap:15px;font-size:0.8rem;color:var(--gold-medium);margin-bottom:12px;}
+.service-meta span{display:flex;align-items:center;gap:5px;}
+.service-desc{font-size:0.85rem;color:var(--gold-pale);opacity:0.7;line-height:1.5;margin-bottom:15px;}
+.service-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:rgba(184,137,23,0.15);border:1px solid rgba(184,137,23,0.3);border-radius:10px;color:var(--gold-primary);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.3s;}
+.service-btn:hover{background:var(--gold-primary);color:var(--black);}
+.products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:0 20px;}
+.product-card{background:linear-gradient(145deg,var(--black-light),rgba(45,45,45,0.8));border:1px solid rgba(184,137,23,0.15);border-radius:16px;overflow:hidden;transition:all 0.3s;}
+.product-card:hover{border-color:rgba(184,137,23,0.35);transform:translateY(-2px);}
+.product-img{width:100%;height:140px;object-fit:cover;display:block;}
+.product-info{padding:14px;}
+.product-name{font-size:0.85rem;font-weight:600;color:var(--gold-pale);line-height:1.4;margin-bottom:6px;}
+.product-note{font-size:0.75rem;color:var(--gold-medium);opacity:0.8;}
+.product-contact{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;padding:8px;background:rgba(184,137,23,0.1);border-radius:8px;font-size:0.75rem;color:var(--gold-primary);font-weight:500;}
+.booking-container{max-width:500px;margin:0 auto;padding:20px;}
+.booking-step{display:none;}
+.booking-step.active{display:block;animation:fadeIn 0.3s;}
+.step-indicator{display:flex;justify-content:center;gap:8px;margin-bottom:30px;padding:0 20px;}
+.step-dot{width:10px;height:10px;border-radius:50%;background:rgba(184,137,23,0.2);transition:all 0.3s;}
+.step-dot.active{background:var(--gold-primary);box-shadow:0 0 10px rgba(184,137,23,0.4);}
+.step-dot.completed{background:var(--gold-medium);}
+.booking-title{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold-pale);text-align:center;margin-bottom:8px;}
+.booking-subtitle{text-align:center;font-size:0.9rem;color:var(--gold-medium);margin-bottom:25px;}
+.option-grid{display:grid;gap:12px;}
+.option-card{background:linear-gradient(145deg,var(--black-light),rgba(45,45,45,0.8));border:2px solid rgba(184,137,23,0.15);border-radius:16px;padding:18px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:15px;}
+.option-card:hover{border-color:rgba(184,137,23,0.4);background:rgba(184,137,23,0.05);}
+.option-card.selected{border-color:var(--gold-primary);background:rgba(184,137,23,0.1);}
+.option-icon{width:50px;height:50px;border-radius:14px;background:rgba(184,137,23,0.15);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+.option-info h4{font-size:1rem;color:var(--gold-pale);margin-bottom:4px;}
+.option-info p{font-size:0.8rem;color:var(--gold-medium);}
+.option-check{margin-left:auto;width:24px;height:24px;border-radius:50%;border:2px solid rgba(184,137,23,0.3);display:flex;align-items:center;justify-content:center;transition:all 0.3s;flex-shrink:0;}
+.option-card.selected .option-check{background:var(--gold-primary);border-color:var(--gold-primary);}
+.option-check svg{width:14px;height:14px;color:var(--black);opacity:0;transition:opacity 0.3s;}
+.option-card.selected .option-check svg{opacity:1;}
+.calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.calendar-nav{width:40px;height:40px;border-radius:12px;background:rgba(184,137,23,0.15);border:none;color:var(--gold-primary);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;}
+.calendar-month{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold-pale);}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:25px;}
+.calendar-day-label{text-align:center;font-size:0.7rem;font-weight:600;color:var(--gold-medium);padding:8px 0;text-transform:uppercase;letter-spacing:1px;}
+.calendar-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all 0.2s;color:var(--gold-pale);background:rgba(184,137,23,0.05);border:1px solid transparent;}
+.calendar-day:hover:not(.disabled):not(.selected){background:rgba(184,137,23,0.15);border-color:rgba(184,137,23,0.3);}
+.calendar-day.selected{background:var(--gold-primary);color:var(--black);font-weight:700;box-shadow:0 4px 15px rgba(184,137,23,0.3);}
+.calendar-day.disabled{color:rgba(184,137,23,0.2);cursor:not-allowed;background:transparent;}
+.calendar-day.today{border:1.5px solid var(--gold-primary);}.calendar-day.fully-booked{background:rgba(139,58,58,0.15);color:#c97b7b;border-color:rgba(139,58,58,0.3);}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.time-slot{padding:12px 8px;text-align:center;border-radius:12px;background:rgba(184,137,23,0.08);border:1.5px solid rgba(184,137,23,0.15);color:var(--gold-pale);font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.2s;}
+.time-slot:hover:not(.disabled){border-color:var(--gold-primary);background:rgba(184,137,23,0.15);}
+.time-slot.selected{background:var(--gold-primary);color:var(--black);border-color:var(--gold-primary);font-weight:700;}
+.time-slot.disabled{opacity:0.3;cursor:not-allowed;text-decoration:line-through;}.time-slot.booked{background:rgba(139,58,58,0.2);border-color:rgba(139,58,58,0.4);color:#c97b7b;cursor:not-allowed;opacity:0.9;}
+.form-group{margin-bottom:20px;}
+.form-label{display:block;font-size:0.85rem;font-weight:600;color:var(--gold-pale);margin-bottom:8px;}
+.form-input{width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid rgba(184,137,23,0.2);background:var(--black-light);color:var(--gold-pale);font-size:1rem;font-family:'Inter',sans-serif;transition:all 0.3s;outline:none;}
+.form-input:focus{border-color:var(--gold-primary);box-shadow:0 0 0 3px rgba(184,137,23,0.1);}
+.form-input::placeholder{color:rgba(184,137,23,0.3);}
+.summary-card{background:linear-gradient(145deg,var(--black-light),rgba(45,45,45,0.8));border:1.5px solid rgba(184,137,23,0.2);border-radius:20px;padding:25px;margin-bottom:25px;}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(184,137,23,0.1);}
+.summary-row:last-child{border-bottom:none;}
+.summary-label{font-size:0.85rem;color:var(--gold-medium);}
+.summary-value{font-size:0.9rem;font-weight:600;color:var(--gold-pale);text-align:right;}
+.summary-value.price{color:var(--gold-primary);font-size:1.1rem;}
+.admin-header{background:linear-gradient(135deg,rgba(184,137,23,0.15),rgba(134,96,66,0.1));padding:30px 20px;text-align:center;border-bottom:1px solid rgba(184,137,23,0.2);}
+.admin-header h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold-pale);margin-bottom:5px;}
+.admin-header p{font-size:0.85rem;color:var(--gold-medium);}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:20px;}
+.stat-card{background:linear-gradient(145deg,var(--black-light),rgba(45,45,45,0.8));border:1px solid rgba(184,137,23,0.15);border-radius:16px;padding:20px;text-align:center;}
+.stat-number{font-size:2rem;font-weight:700;color:var(--gold-primary);font-family:'Playfair Display',serif;}
+.stat-label{font-size:0.8rem;color:var(--gold-medium);margin-top:5px;}
+.appointments-list{padding:0 20px 30px;}
+.appointment-item{background:linear-gradient(145deg,var(--black-light),rgba(45,45,45,0.8));border:1px solid rgba(184,137,23,0.15);border-radius:16px;padding:18px;margin-bottom:12px;transition:all 0.3s;}
+.appointment-item:hover{border-color:rgba(184,137,23,0.3);}
+.appointment-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;}
+.appointment-service{font-size:1rem;font-weight:600;color:var(--gold-pale);}
+.appointment-status{padding:4px 12px;border-radius:50px;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;}
+.status-pending{background:rgba(184,137,23,0.15);color:var(--gold-primary);}
+.status-confirmed{background:rgba(74,124,89,0.2);color:#7bc97b;}
+.appointment-details{font-size:0.85rem;color:var(--gold-medium);line-height:1.6;}
+.appointment-details strong{color:var(--gold-pale);}
+.appointment-actions{display:flex;gap:8px;margin-top:12px;}
+.btn-small{padding:8px 16px;border-radius:10px;font-size:0.8rem;font-weight:600;cursor:pointer;border:none;transition:all 0.3s;}
+.btn-confirm{background:rgba(74,124,89,0.2);color:#7bc97b;border:1px solid rgba(74,124,89,0.3);}
+.btn-confirm:hover{background:rgba(74,124,89,0.3);}
+.btn-cancel{background:rgba(139,58,58,0.2);color:#c97b7b;border:1px solid rgba(139,58,58,0.3);}
+.btn-cancel:hover{background:rgba(139,58,58,0.3);}
+.empty-state{text-align:center;padding:50px 20px;color:var(--gold-medium);}
+.empty-state svg{width:60px;height:60px;margin-bottom:20px;opacity:0.5;}
+.contact-card{background:linear-gradient(145deg,var(--black-light),rgba(45,45,45,0.8));border:1px solid rgba(184,137,23,0.15);border-radius:20px;padding:25px;margin:0 20px 40px;}
+.contact-item{display:flex;align-items:center;gap:15px;padding:15px 0;border-bottom:1px solid rgba(184,137,23,0.1);}
+.contact-item:last-child{border-bottom:none;}
+.contact-icon{width:45px;height:45px;border-radius:14px;background:rgba(184,137,23,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-icon svg{width:22px;height:22px;color:var(--gold-primary);}
+.contact-info h4{font-size:0.9rem;color:var(--gold-pale);margin-bottom:3px;}
+.contact-info p{font-size:0.8rem;color:var(--gold-medium);}
+.map-placeholder{width:100%;height:200px;background:linear-gradient(135deg,rgba(184,137,23,0.1),rgba(134,96,66,0.1));border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;margin-top:20px;border:1px solid rgba(184,137,23,0.2);}
+.map-placeholder svg{width:40px;height:40px;color:var(--gold-primary);}
+.map-placeholder p{font-size:0.85rem;color:var(--gold-medium);text-align:center;padding:0 20px;}
+.fab-container{position:fixed;bottom:25px;right:20px;display:flex;flex-direction:column;gap:12px;z-index:100;}
+.fab{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold-primary),var(--gold-warm));border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(184,137,23,0.4);transition:all 0.3s;}
+.fab:hover{transform:scale(1.05);box-shadow:0 6px 30px rgba(184,137,23,0.5);}
+.fab svg{width:24px;height:24px;color:var(--black);}
+.fab-label{position:absolute;right:65px;background:var(--black-light);padding:6px 12px;border-radius:8px;font-size:0.75rem;color:var(--gold-pale);white-space:nowrap;opacity:0;transition:opacity 0.3s;pointer-events:none;border:1px solid rgba(184,137,23,0.2);}
+.fab:hover .fab-label{opacity:1;}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal{background:var(--black);border:1px solid rgba(184,137,23,0.3);border-radius:24px;padding:30px;max-width:400px;width:100%;text-align:center;animation:modalIn 0.3s;}
+@keyframes modalIn{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-icon{width:60px;height:60px;border-radius:50%;background:rgba(74,124,89,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+.modal-icon svg{width:30px;height:30px;color:#7bc97b;}
+.modal h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold-pale);margin-bottom:10px;}
+.modal p{font-size:0.9rem;color:var(--gold-medium);line-height:1.6;margin-bottom:25px;}
+.modal-btn{width:100%;padding:14px;border-radius:14px;background:var(--gold-primary);color:var(--black);font-weight:700;font-size:1rem;border:none;cursor:pointer;}
+.footer{background:linear-gradient(180deg,transparent,rgba(184,137,23,0.05));padding:40px 20px 100px;text-align:center;border-top:1px solid rgba(184,137,23,0.1);}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold-primary);margin-bottom:10px;}
+.footer-tagline{font-size:0.8rem;color:var(--gold-medium);margin-bottom:20px;}
+.footer-hours{font-size:0.85rem;color:var(--gold-pale);opacity:0.8;margin-bottom:20px;}
+.footer-copy{font-size:0.75rem;color:var(--gold-medium);opacity:0.5;}
+::-webkit-scrollbar{width:14px;}
+::-webkit-scrollbar-track{background:var(--black);border-left:1px solid rgba(184,137,23,0.08);}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold-primary),var(--gold-warm));border-radius:8px;border:3px solid var(--black);}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,var(--gold-light),var(--gold-primary));}
+::-webkit-scrollbar-button{display:none;}
+@media(min-width:768px){.hero h1{font-size:3.5rem;}.services-grid{grid-template-columns:repeat(2,1fr);}.products-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+<nav class="nav-bar">
+<div class="nav-logo">AFRO NATURAL<span>PELUQUERIA Y ESTETICA</span></div>
+<button class="nav-menu-btn" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-overlay" id="navOverlay">
+<div class="nav-item active" onclick="navigateTo('home')"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Inicio</div>
+<div class="nav-item" onclick="navigateTo('services')"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 0L4 4m7 7l2.879-2.879M12 12l-2.879 2.879M12 12l2.879 2.879M12 12l-2.879-2.879"/></svg>Servicios</div>
+<div class="nav-item" onclick="navigateTo('products')"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>Productos</div>
+<div class="nav-item" onclick="navigateTo('booking')"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Reservar Cita</div>
+<div class="nav-item" onclick="navigateTo('admin')"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Panel Admin</div>
+<div class="nav-item" onclick="navigateTo('contact')"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Contacto</div>
+</div>
+
+<div class="page active" id="page-home">
+<section class="hero">
+<div class="hero-bg"></div><div class="hero-pattern"></div>
+<div class="hero-content">
+<div class="hero-logo-wrap">
+  <img src="Afrologo_sinback.png" alt="Afro Natural - Logo oficial" class="hero-logo-img">
+</div>
+<div class="hero-welcome" id="heroWelcome">
+  <span class="hero-welcome-line es">Bienvenido</span>
+  <span class="hero-welcome-sep">· · ·</span>
+  <span class="hero-welcome-line en">Welcome</span>
+  <span class="hero-welcome-sep">· · ·</span>
+  <span class="hero-welcome-line ar">أهلاً وسهلاً</span>
+</div>
+<div class="hero-badge">Especialistas en Pelo Afro</div>
+<h1>AFRO NATURAL<span class="accent">PELUQUERIA Y ESTETICA INTEGRAL</span></h1>
+<p class="hero-subtitle">Cuidado experto para tu cabello, piel y cuerpo. Belleza que celebra tu esencia natural.</p>
+<div class="hero-location"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Frente al Centro de Analisis Santa Catalina, Bata, Guinea Ecuatorial</div>
+<div class="hero-buttons">
+<button class="btn btn-primary" onclick="navigateTo('booking')"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Reservar Cita</button>
+<button class="btn btn-secondary" onclick="navigateTo('services')"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 0L4 4m7 7l2.879-2.879M12 12l-2.879 2.879M12 12l2.879 2.879M12 12l-2.879-2.879"/></svg>Ver Servicios</button>
+</div>
+</div>
+<div class="hero-scroll"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg></div>
+</section>
+
+<!-- NUESTROS PRODUCTOS — visible justo debajo de los botones del hero -->
+<div style="text-align:center;padding:22px 20px 10px;background:linear-gradient(180deg,rgba(26,26,26,1),rgba(26,26,26,0.95));">
+  <button class="btn btn-secondary" onclick="navigateTo('products')" style="display:inline-flex;margin:0 auto;border-color:rgba(184,137,23,0.5);padding:14px 32px;font-size:1rem;gap:12px;">
+    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+    Nuestros Productos
+  </button>
+</div>
+<div class="specialty-banner" style="margin-top:50px;">
+<h3>Especialización en Pelo Afro &amp; Belleza Integral</h3>
+<p>Estamos especializados en el cuidado del cuerpo, la piel y el cabello afro. Con manos expertas y alma dedicada, ofrecemos una amplia gama de tratamientos de belleza pensados para realzar tu esencia más auténtica — para que no solo luzcas radiante, sino que te sientas verdaderamente bien contigo mismo.</p>
+<div class="specialty-tags"><span class="specialty-tag">Corte Especializado</span><span class="specialty-tag">Tratamientos Hidratantes</span><span class="specialty-tag">Trenzas Protectoras</span><span class="specialty-tag">Crecimiento Natural</span></div>
+</div>
+<section class="section">
+<div class="section-header"><div class="section-label">Nuestros Servicios</div><h2 class="section-title">Belleza Integral</h2><p class="section-desc">Descubre todos los tratamientos que tenemos para ti</p></div>
+<div class="services-grid" id="homeServices"></div>
+<div style="text-align:center;margin-top:25px;"><button class="btn btn-secondary" onclick="navigateTo('services')" style="display:inline-flex;">Ver Todos los Servicios<svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button></div>
+</section>
+<section class="section" style="background:linear-gradient(180deg,transparent,rgba(184,137,23,0.03));">
+<div class="section-header"><div class="section-label">Tienda</div><h2 class="section-title">Productos Premium</h2><p class="section-desc">Productos capilares y de cuidado personal de calidad</p></div>
+<div class="products-grid" id="homeProducts"></div>
+<div style="text-align:center;margin-top:25px;"><button class="btn btn-secondary" onclick="navigateTo('products')" style="display:inline-flex;">Ver Catalogo Completo<svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button></div>
+</section>
+<section class="section">
+<div class="section-header"><div class="section-label">Visitanos</div><h2 class="section-title">Contacto</h2></div>
+<div class="contact-card">
+<div class="contact-item"><div class="contact-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div class="contact-info"><h4>Direccion</h4><p>Frente al Centro de Analisis Santa Catalina, Bata, Guinea Ecuatorial</p></div></div>
+<div class="contact-item"><div class="contact-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="contact-info"><h4>Horario</h4><p>Lunes a Domingo: 9:00 - 19:00</p></div></div>
+<div class="map-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><p>Frente al Centro de Analisis Santa Catalina<br>Bata, Guinea Ecuatorial</p></div>
+</div>
+</section>
+<section class="section" id="sobre-nosotros" style="background:linear-gradient(180deg,rgba(184,137,23,0.04),transparent);border-top:1px solid rgba(184,137,23,0.12);">
+  <div class="section-header">
+    <div class="section-label">Nuestra Historia</div>
+    <h2 class="section-title">Sobre Nosotros</h2>
+  </div>
+  <div style="max-width:680px;margin:0 auto;padding:0 20px;">
+    <div style="background:linear-gradient(145deg,rgba(45,45,45,0.7),rgba(45,31,15,0.4));border:1px solid rgba(184,137,23,0.18);border-radius:24px;padding:35px 28px;text-align:center;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-30px;left:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(184,137,23,0.08),transparent);border-radius:50%;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,212,146,0.06),transparent);border-radius:50%;pointer-events:none;"></div>
+      <div style="font-size:2.2rem;margin-bottom:18px;">✨</div>
+      <p style="font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--gold-pale);line-height:1.95;opacity:0.95;font-style:italic;">
+        Llevamos más de un año sembrando confianza y cosechando sonrisas. En <strong style="color:var(--gold-primary);font-style:normal;">Afro Natural</strong>, no solo cuidamos el cabello — cuidamos a las personas. El 95% de quienes cruzan nuestra puerta regresan, no por costumbre, sino porque aquí encuentran algo que va más allá del servicio: encuentran un espacio donde son escuchados, valorados y transformados. Nos mueve el dinamismo que cada cliente merece, adaptándonos con destreza a cada textura, cada historia, cada necesidad. Porque la belleza verdadera no se impone — se revela, con paciencia, con técnica, y con el amor profundo que ponemos en cada toque, cada tratamiento, cada detalle.
+      </p>
+      <div style="width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold-primary),transparent);margin:24px auto 0;border-radius:2px;"></div>
+      <p style="font-size:0.8rem;color:var(--gold-medium);margin-top:16px;letter-spacing:2px;text-transform:uppercase;font-weight:500;">Bata, Guinea Ecuatorial · Desde 2024</p>
+    </div>
+    <!-- Estadísticas visuales -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;text-align:center;">
+      <div style="background:rgba(184,137,23,0.07);border:1px solid rgba(184,137,23,0.18);border-radius:16px;padding:20px 10px;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-primary);font-weight:700;">+1</div>
+        <div style="font-size:0.72rem;color:var(--gold-pale);opacity:0.75;margin-top:4px;line-height:1.4;">Año de<br>Experiencia</div>
+      </div>
+      <div style="background:rgba(184,137,23,0.07);border:1px solid rgba(184,137,23,0.18);border-radius:16px;padding:20px 10px;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-primary);font-weight:700;">95%</div>
+        <div style="font-size:0.72rem;color:var(--gold-pale);opacity:0.75;margin-top:4px;line-height:1.4;">Clientes<br>que Repiten</div>
+      </div>
+      <div style="background:rgba(184,137,23,0.07);border:1px solid rgba(184,137,23,0.18);border-radius:16px;padding:20px 10px;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-primary);font-weight:700;">12+</div>
+        <div style="font-size:0.72rem;color:var(--gold-pale);opacity:0.75;margin-top:4px;line-height:1.4;">Servicios<br>Especializados</div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="footer"><div class="footer-logo">AFRO NATURAL</div><div class="footer-tagline">Peluqueria y Estetica Integral</div><div class="footer-hours">Lunes a Domingo - 9:00 - 19:00</div><div class="footer-copy">2026 AFRO NATURAL. Todos los derechos reservados.</div></footer>
+</div>
+
+<div class="page" id="page-services">
+<section class="section" style="padding-top:80px;">
+<div class="section-header"><div class="section-label">Servicios</div><h2 class="section-title">Nuestros Tratamientos</h2><p class="section-desc">Especializados en cuidado capilar, estetica y bienestar</p></div>
+<div class="services-grid" id="allServices"></div>
+</section>
+</div>
+
+<div class="page" id="page-products">
+<section class="section" style="padding-top:80px;">
+<div class="section-header"><div class="section-label">Tienda</div><h2 class="section-title">Productos</h2><p class="section-desc">Consulta precios directamente en nuestra peluqueria</p></div>
+<div class="products-grid" id="allProducts"></div>
+</section>
+</div>
+
+<div class="page" id="page-booking">
+<section class="section" style="padding-top:80px;padding-bottom:120px;">
+<div class="booking-container">
+<div class="step-indicator" id="stepIndicator"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+<div class="booking-step active" id="step1"><h2 class="booking-title">Elige un Servicio</h2><p class="booking-subtitle">Selecciona el tratamiento que deseas</p><div class="option-grid" id="serviceOptions"></div></div>
+<div class="booking-step" id="step2"><h2 class="booking-title">Elige Profesional</h2><p class="booking-subtitle">Selecciona quien te atendera</p><div class="option-grid" id="proOptions"></div></div>
+<div class="booking-step" id="step3"><h2 class="booking-title">Selecciona Fecha</h2><p class="booking-subtitle">Elige el dia de tu cita</p><div class="calendar-header"><button class="calendar-nav" onclick="changeMonth(-1)">&lsaquo;</button><div class="calendar-month" id="calendarMonth"></div><button class="calendar-nav" onclick="changeMonth(1)">&rsaquo;</button></div><div class="calendar-grid" id="calendarGrid"></div></div>
+<div class="booking-step" id="step4"><h2 class="booking-title">Elige Hora</h2><p class="booking-subtitle">Selecciona la hora disponible</p><div class="time-grid" id="timeSlots"></div></div>
+<div class="booking-step" id="step5"><h2 class="booking-title">Tus Datos</h2><p class="booking-subtitle">Completa la informacion para confirmar</p><div class="summary-card" id="bookingSummary"></div><div class="form-group"><label class="form-label">Nombre completo</label><input type="text" class="form-input" id="clientName" placeholder="Tu nombre y apellidos"></div><div class="form-group"><label class="form-label">Telefono</label><input type="tel" class="form-input" id="clientPhone" placeholder="Numero de contacto"></div><div class="form-group"><label class="form-label">Notas adicionales (opcional)</label><input type="text" class="form-input" id="clientNotes" placeholder="Alguna preferencia especial..."></div></div>
+<div style="display:flex;gap:12px;margin-top:30px;"><button class="btn btn-secondary" id="prevBtn" onclick="prevStep()" style="flex:1;display:none;">Atras</button><button class="btn btn-primary" id="nextBtn" onclick="nextStep()" style="flex:1;">Continuar</button></div>
+</div>
+</section>
+</div>
+
+<div class="page" id="page-admin">
+<div class="admin-header"><h2>Panel de Administracion</h2><p>Gestiona las citas de AFRO NATURAL</p></div>
+<div class="stats-grid"><div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Citas</div></div><div class="stat-card"><div class="stat-number" id="statPending">0</div><div class="stat-label">Pendientes</div></div><div class="stat-card"><div class="stat-number" id="statToday">0</div><div class="stat-label">Hoy</div></div><div class="stat-card"><div class="stat-number" id="statWeek">0</div><div class="stat-label">Esta Semana</div></div></div>
+<div class="section-header" style="padding:0 20px;text-align:left;"><div class="section-label">Gestion</div><h2 class="section-title" style="text-align:left;font-size:1.4rem;">Citas Reservadas</h2></div>
+<div class="appointments-list" id="appointmentsList"></div>
+</div>
+
+<div class="page" id="page-contact">
+<section class="section" style="padding-top:80px;">
+<div class="section-header"><div class="section-label">Visitanos</div><h2 class="section-title">Contacto</h2></div>
+<div class="contact-card">
+<div class="contact-item"><div class="contact-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div class="contact-info"><h4>Direccion</h4><p>Frente al Centro de Analisis Santa Catalina, Bata, Guinea Ecuatorial</p></div></div>
+<div class="contact-item"><div class="contact-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="contact-info"><h4>Horario de Atencion</h4><p>Lunes a Domingo: 9:00 - 19:00</p></div></div>
+<div class="contact-item"><div class="contact-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div><div class="contact-info"><h4>Telefono</h4><p>Consulta en la peluqueria</p></div></div>
+<div class="map-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><p>Frente al Centro de Analisis Santa Catalina<br>Bata, Guinea Ecuatorial</p></div>
+</div>
+</section>
+</div>
+
+<div class="modal-overlay" id="successModal">
+<div class="modal">
+<div class="modal-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+<h3>!Cita Reservada!</h3>
+<p>Tu cita ha sido registrada correctamente. Te esperamos en AFRO NATURAL. El pago se realizara en persona.</p>
+<button class="modal-btn" onclick="closeModal()">Aceptar</button>
+</div>
+</div>
+
+<div class="fab-container">
+<button class="fab" onclick="navigateTo('booking')" style="position:relative;"><span class="fab-label">Reservar Cita</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></button>
+<button class="fab" onclick="window.open('https://wa.me/?text=Hola%20AFRO%20NATURAL%2C%20quiero%20informacion','_blank')" style="position:relative;background:linear-gradient(135deg,#25D366,#128C7E);"><span class="fab-label">WhatsApp</span><svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>
+</div>
+<script>
+const services=[
+{id:'corte',name:'Cortes a Damas y Caballeros',category:'Corte',icon:'&#9986;',duration:'30-45 min',desc:'Corte profesional adaptado a tu estilo y tipo de cabello.',pros:['Victor','Luis'],image:'cortes_a_man.png'},
+{id:'tratamiento',name:'Tratamientos para Cabello Afro',category:'Tratamiento',icon:'&#128134;',duration:'45-60 min',desc:'Hidratacion profunda, nutricion y revitalizacion del cabello afro.',pros:['Especialista'],image:'tratamiento_para_cabello.png'},
+{id:'secado',name:'Secados y Planchados',category:'Peinado',icon:'&#128168;',duration:'45-60 min',desc:'Secado profesional y alisado temporal con proteccion termica.',pros:['Especialista'],image:'secados_y_planch.png'},
+{id:'trenzas',name:'Trenzas',category:'Peinado',icon:'&#129516;',duration:'1-3 h',desc:'Trenzas de todo tipo: box braids, twists, cornrows y mas.',pros:['Yolanda'],image:'trenzas_afro.png'},
+{id:'manicura',name:'Manicura y Pedicura',category:'Estetica',icon:'&#128133;',duration:'45-60 min',desc:'Cuidado completo de manos y pies con esmaltado profesional.',pros:['Luisa','Lidia'],image:'mani_y_pedi_2.jpg'},
+{id:'masaje',name:'Masajes',category:'Bienestar',icon:'&#128080;',duration:'30-60 min',desc:'Masajes relajantes y terapeuticos para tu bienestar.',pros:['Luisa','Lidia'],image:'masajes_afro.png'},
+{id:'depilacion',name:'Depilacion con Cera',category:'Estetica',icon:'&#10024;',duration:'20-45 min',desc:'Depilacion con cera de alta calidad para una piel suave.',pros:['Luisa','Lidia'],image:'depilacion_con_cera.png'},
+{id:'facial',name:'Limpieza Facial para Caballero',category:'Estetica',icon:'&#129494;',duration:'30-45 min',desc:'Limpieza profunda facial disenada para la piel masculina.',pros:['Luisa','Lidia'],image:'limpieza_facial.png'},
+{id:'pestanas',name:'Fijacion de Pestanas',category:'Estetica',icon:'&#128065;',duration:'45-60 min',desc:'Extension y fijacion de pestanas para una mirada impactante.',pros:['Luisa','Lidia'],image:'fijacion_pestañas.png'},
+{id:'peluca',name:'Confeccion y Arreglo de Pelucas',category:'Especializado',icon:'&#128105;',duration:'1-4 h',desc:'Diseno, confeccion y reparacion de pelucas personalizadas.',pros:['Especialista'],image:'arreglo_pelucas.png'},
+{id:'maderoterapia',name:'Maderoterapia',category:'Bienestar',icon:'&#129717;',duration:'45-60 min',desc:'Masaje con utensilios de madera para moldear y tonificar. Tambien disponible a 4 manos con ambas profesionales.',pros:['Luisa','Lidia','Luisa y Lidia - Maderoterapia a 4 Manos'],image:'maderoterapia_afro.png'},
+{id:'radiofrecuencia',name:'Radiofrecuencia',category:'Estetica',icon:'&#9889;',duration:'30-45 min',desc:'Tratamiento reafirmante con tecnologia de radiofrecuencia.',pros:['Especialista'],image:'radiofrecuencia_2.png'}
+];
+
+const products=[
+{id:'p1',name:'Gama de Productos Capilares',category:'Cabello',icon:'&#129524;',image:'productos afro/gama_capilares_AN.png'},
+{id:'p2',name:'Cremas Anticeluliticas',category:'Corporal',icon:'&#129524;',image:'productos afro/crema_anticelulitis_AN.png'},
+{id:'p3',name:'Cremas de Skin Care',category:'Facial',icon:'&#129524;',image:'productos afro/snkin_care_AN.png'},
+{id:'p4',name:'Serum Facial y Crema Facial',category:'Facial',icon:'&#128167;',image:'productos afro/Serum_facial_AN.png'},
+{id:'p5',name:'Exfoliantes Corporales y Faciales',category:'Exfoliacion',icon:'&#129533;',image:'productos afro/exfoliante_facial_AN.png'},
+{id:'p6',name:'Accesorios de Cabello',category:'Accesorios',icon:'&#127872;',image:'productos afro/accesorio_pelo_AN.png'},
+{id:'p7',name:'Productos para Crecimiento del Cabello',category:'Crecimiento',icon:'&#127793;',image:'productos afro/crecimiento_cabello_AN.png'},
+{id:'p8',name:'Keratina',category:'Tratamiento',icon:'&#10024;',image:'productos afro/Keratina_AN.png'},
+{id:'p9',name:'Leches Hidratantes para el Cuerpo',category:'Corporal',icon:'&#129371;',image:'productos afro/leche_hidratante_AN.png'}
+];
+
+let currentPage='home';
+let bookingState={step:1,service:null,professional:null,date:null,time:null,name:'',phone:'',notes:''};
+let currentMonth=new Date();
+let selectedDate=null;
+
+function toggleMenu(){document.querySelector('.nav-menu-btn').classList.toggle('active');document.getElementById('navOverlay').classList.toggle('active');}
+function navigateTo(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active');document.querySelectorAll('.nav-item').forEach(item=>item.classList.remove('active'));document.querySelector('.nav-menu-btn').classList.remove('active');document.getElementById('navOverlay').classList.remove('active');currentPage=page;window.scrollTo(0,0);if(page==='booking'){if(!bookingState||!bookingState.service){bookingState={step:1,service:null,professional:null,date:null,time:null,name:'',phone:'',notes:''};selectedDate=null;}renderBookingStep();}if(page==='admin')renderAdmin();}
+
+function renderHomeServices(){const featured=services.slice(0,4);document.getElementById('homeServices').innerHTML=featured.map(s=>`<div class="service-card" onclick="startBooking('${s.id}')"><img src="${s.image}" alt="${s.name}" class="service-img" loading="lazy"><div class="service-info"><div class="service-name">${s.icon} ${s.name}</div><div class="service-meta"><span>&#9201; ${s.duration}</span><span>&#128100; ${s.pros.join(' / ')}</span></div><div class="service-desc">${s.desc}</div><button class="service-btn">Reservar<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button></div></div>`).join('');}
+
+function renderHomeProducts(){const featured=products.slice(0,4);document.getElementById('homeProducts').innerHTML=featured.map(p=>`<div class="product-card"><img src="${p.image}" alt="${p.name}" class="product-img" loading="lazy"><div class="product-info"><div class="product-name">${p.name}</div><div class="product-contact"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>Consultar en tienda</div></div></div>`).join('');}
+
+function renderAllServices(){document.getElementById('allServices').innerHTML=services.map(s=>`<div class="service-card" onclick="startBooking('${s.id}')"><img src="${s.image}" alt="${s.name}" class="service-img" loading="lazy"><div class="service-info"><div class="service-name">${s.icon} ${s.name}</div><div class="service-meta"><span>&#9201; ${s.duration}</span><span>&#128100; ${s.pros.join(' / ')}</span></div><div class="service-desc">${s.desc}</div><button class="service-btn">Reservar Cita<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button></div></div>`).join('');}
+
+function renderAllProducts(){document.getElementById('allProducts').innerHTML=products.map(p=>`<div class="product-card"><img src="${p.image}" alt="${p.name}" class="product-img" loading="lazy"><div class="product-info"><div class="product-name">${p.name}</div><div class="product-note">${p.category}</div><div class="product-contact"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>Consultar precio en tienda</div></div></div>`).join('');}
+
+function startBooking(serviceId){bookingState={step:1,service:serviceId,professional:null,date:null,time:null,name:'',phone:'',notes:''};navigateTo('booking');renderBookingStep();}
+
+function renderBookingStep(){document.querySelectorAll('.booking-step').forEach(s=>s.classList.remove('active'));document.getElementById('step'+bookingState.step).classList.add('active');const dots=document.querySelectorAll('.step-dot');dots.forEach((d,i)=>{d.classList.remove('active','completed');if(i+1===bookingState.step)d.classList.add('active');else if(i+1<bookingState.step)d.classList.add('completed');});document.getElementById('prevBtn').style.display=bookingState.step>1?'block':'none';document.getElementById('nextBtn').textContent=bookingState.step===5?'Confirmar Reserva':'Continuar';if(bookingState.step===1)renderServiceOptions();if(bookingState.step===2)renderProOptions();if(bookingState.step===3)renderCalendar();if(bookingState.step===4)renderTimeSlots();if(bookingState.step===5)renderSummary();}
+
+function renderServiceOptions(){document.getElementById('serviceOptions').innerHTML=services.map(s=>`<div class="option-card ${bookingState.service===s.id?'selected':''}" onclick="selectService('${s.id}')"><div class="option-icon">${s.icon}</div><div class="option-info"><h4>${s.name}</h4><p>${s.duration} - ${s.pros.join(' / ')}</p></div><div class="option-check"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div></div>`).join('');}
+
+function selectService(id){bookingState.service=id;renderServiceOptions();}
+
+function renderProOptions(){const service=services.find(s=>s.id===bookingState.service);document.getElementById('proOptions').innerHTML=service.pros.map(p=>`<div class="option-card ${bookingState.professional===p?'selected':''}" onclick="selectPro('${p}')"><div class="option-icon">&#128100;</div><div class="option-info"><h4>${p}</h4><p>${service.name}</p></div><div class="option-check"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div></div>`).join('');}
+
+function selectPro(pro){bookingState.professional=pro;renderProOptions();}
+
+function renderCalendar(){const monthNames=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];document.getElementById('calendarMonth').textContent=monthNames[currentMonth.getMonth()]+' '+currentMonth.getFullYear();const firstDay=new Date(currentMonth.getFullYear(),currentMonth.getMonth(),1);const lastDay=new Date(currentMonth.getFullYear(),currentMonth.getMonth()+1,0);const startDay=firstDay.getDay();const daysInMonth=lastDay.getDate();const today=new Date();const allSlots=['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'];let html='<div class="calendar-day-label">Dom</div><div class="calendar-day-label">Lun</div><div class="calendar-day-label">Mar</div><div class="calendar-day-label">Mie</div><div class="calendar-day-label">Jue</div><div class="calendar-day-label">Vie</div><div class="calendar-day-label">Sab</div>';for(let i=0;i<startDay;i++)html+='<div class="calendar-day disabled"></div>';for(let day=1;day<=daysInMonth;day++){const date=new Date(currentMonth.getFullYear(),currentMonth.getMonth(),day);const isToday=date.toDateString()===today.toDateString();const isPast=date<new Date(today.getFullYear(),today.getMonth(),today.getDate());const isSelected=selectedDate&&date.toDateString()===selectedDate.toDateString();const isSunday=date.getDay()===0;const dateStr=date.toISOString().split('T')[0];const bookedTimes=getBookedSlots(dateStr,bookingState.service);const isFullyBooked=bookedTimes.length>=allSlots.length;let classes='calendar-day';if(isPast||isSunday||isFullyBooked)classes+=' disabled';if(isToday)classes+=' today';if(isSelected)classes+=' selected';if(isFullyBooked)classes+=' fully-booked';if(isPast||isSunday||isFullyBooked){html+=`<div class="${classes}">${day}${isFullyBooked?'<span style="font-size:0.5rem;display:block;color:#c97b7b;">LLENO</span>':''}</div>`;}else{html+=`<div class="${classes}" onclick="selectDate(${day})">${day}</div>`;}}document.getElementById('calendarGrid').innerHTML=html;}
+
+function changeMonth(delta){currentMonth.setMonth(currentMonth.getMonth()+delta);renderCalendar();}
+function selectDate(day){selectedDate=new Date(currentMonth.getFullYear(),currentMonth.getMonth(),day);bookingState.date=selectedDate;renderCalendar();}
+
+function renderTimeSlots(){const slots=['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'];const dateStr=selectedDate?selectedDate.toISOString().split('T')[0]:'';const bookedTimes=getBookedSlots(dateStr,bookingState.service);document.getElementById('timeSlots').innerHTML=slots.map(t=>{const isBooked=bookedTimes.includes(t);const isSelected=bookingState.time===t;let classes='time-slot';if(isSelected)classes+=' selected';else if(isBooked)classes+=' booked';return`<div class="${classes}" ${!isBooked?`onclick="selectTime('${t}')"`:''}>${isBooked?'<span style="color:#c97b7b;font-size:0.7rem;">OCUPADO</span>':t}</div>`;}).join('');}
+
+function selectTime(time){bookingState.time=time;renderTimeSlots();}
+
+function renderSummary(){const service=services.find(s=>s.id===bookingState.service);const dateStr=selectedDate?selectedDate.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'}):'';document.getElementById('bookingSummary').innerHTML=`<div class="summary-row"><span class="summary-label">Servicio</span><span class="summary-value">${service.name}</span></div><div class="summary-row"><span class="summary-label">Profesional</span><span class="summary-value">${bookingState.professional}</span></div><div class="summary-row"><span class="summary-label">Fecha</span><span class="summary-value">${dateStr}</span></div><div class="summary-row"><span class="summary-label">Hora</span><span class="summary-value">${bookingState.time}</span></div><div class="summary-row"><span class="summary-label">Pago</span><span class="summary-value price">En persona</span></div>`;}
+
+function nextStep(){if(bookingState.step===1&&!bookingState.service){alert('Selecciona un servicio');return;}if(bookingState.step===2&&!bookingState.professional){alert('Selecciona un profesional');return;}if(bookingState.step===3&&!bookingState.date){alert('Selecciona una fecha');return;}if(bookingState.step===4&&!bookingState.time){alert('Selecciona una hora');return;}if(bookingState.step===5){const name=document.getElementById('clientName').value.trim();const phone=document.getElementById('clientPhone').value.trim();if(!name||!phone){alert('Completa tu nombre y telefono');return;}bookingState.name=name;bookingState.phone=phone;bookingState.notes=document.getElementById('clientNotes').value.trim();saveAppointment();document.getElementById('successModal').classList.add('active');return;}bookingState.step++;renderBookingStep();}
+
+function prevStep(){if(bookingState.step>1){bookingState.step--;renderBookingStep();}}
+
+function closeModal(){document.getElementById('successModal').classList.remove('active');navigateTo('home');bookingState={step:1,service:null,professional:null,date:null,time:null,name:'',phone:'',notes:''};selectedDate=null;}
+
+function saveAppointment(){const service=services.find(s=>s.id===bookingState.service);const appointment={id:Date.now(),serviceId:bookingState.service,service:service.name,professional:bookingState.professional,date:selectedDate.toISOString().split('T')[0],time:bookingState.time,clientName:bookingState.name,clientPhone:bookingState.phone,notes:bookingState.notes,status:'pending',createdAt:new Date().toISOString()};const appointments=JSON.parse(localStorage.getItem('afro_natural_appointments')||'[]');appointments.push(appointment);localStorage.setItem('afro_natural_appointments',JSON.stringify(appointments));}
+
+function getAppointments(){return JSON.parse(localStorage.getItem('afro_natural_appointments')||'[]');}function getBookedSlots(dateStr,serviceId){const appointments=getAppointments();return appointments.filter(a=>a.date===dateStr&&a.serviceId===serviceId&&a.status!=='cancelled').map(a=>a.time);}
+
+function renderAdmin(){const appointments=getAppointments();const today=new Date().toISOString().split('T')[0];const weekLater=new Date();weekLater.setDate(weekLater.getDate()+7);document.getElementById('statTotal').textContent=appointments.length;document.getElementById('statPending').textContent=appointments.filter(a=>a.status==='pending').length;document.getElementById('statToday').textContent=appointments.filter(a=>a.date===today).length;document.getElementById('statWeek').textContent=appointments.filter(a=>new Date(a.date)<=weekLater).length;if(appointments.length===0){document.getElementById('appointmentsList').innerHTML=`<div class="empty-state"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><p>No hay citas registradas</p></div>`;return;}document.getElementById('appointmentsList').innerHTML=appointments.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).map(a=>`<div class="appointment-item"><div class="appointment-header"><div class="appointment-service">${a.service}</div><div class="appointment-status status-${a.status}">${a.status==='pending'?'Pendiente':'Confirmada'}</div></div><div class="appointment-details"><strong>Cliente:</strong> ${a.clientName}<br><strong>Telefono:</strong> ${a.clientPhone}<br><strong>Fecha:</strong> ${new Date(a.date).toLocaleDateString('es-ES')} - ${a.time}<br><strong>Profesional:</strong> ${a.professional}${a.notes?'<br><strong>Notas:</strong> '+a.notes:''}</div><div class="appointment-actions"><button class="btn-small btn-confirm" onclick="confirmAppointment(${a.id})">Confirmar</button><button class="btn-small btn-cancel" onclick="cancelAppointment(${a.id})">Cancelar</button></div></div>`).join('');}
+
+function confirmAppointment(id){const appointments=getAppointments();const a=appointments.find(x=>x.id===id);if(a){a.status='confirmed';localStorage.setItem('afro_natural_appointments',JSON.stringify(appointments));renderAdmin();}}
+
+function cancelAppointment(id){if(!confirm('Cancelar esta cita?'))return;const appointments=getAppointments().filter(x=>x.id!==id);localStorage.setItem('afro_natural_appointments',JSON.stringify(appointments));renderAdmin();}
+
+document.addEventListener('DOMContentLoaded',()=>{renderHomeServices();renderHomeProducts();renderAllServices();renderAllProducts();
+
+// Parallax suave en el texto de bienvenida del hero
+const heroWelcome = document.getElementById('heroWelcome');
+if(heroWelcome){
+  window.addEventListener('scroll', ()=>{
+    const scrollY = window.scrollY;
+    if(scrollY < 600){
+      heroWelcome.style.transform = `translateY(${scrollY * 0.18}px)`;
+      heroWelcome.style.opacity = Math.max(0, 1 - scrollY / 380);
+    }
+  }, {passive:true});
+}
+});
+</script>
+</body>
+</html>

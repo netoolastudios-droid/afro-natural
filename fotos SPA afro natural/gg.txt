@@ -1,0 +1,25 @@
+Aspectos a mejorar en KIMI de afro app:
+1) Menú flotante con este logo.
+2) Para eliminar el fondo de cualquier fot y devolverlo en png: https://www.remove.bg
+3) para subir una animación a la SPA es mejor formato webP como alternativa a mp4. Mas ligero para webs y mejor si son videos
+de 2-3 segundos. En ese formato el mp4 se maneja como imagen.
+
+4) en gemini subi el logo y este promt para eliminar el fondo: 
+"Remove the beige background from the provided logo. 
+Keep everything in the image, the woman's head in profile, the text 'AFRO NATURAL' and 'PELUQUERÍA & ESTÉTICA INTEGRAL', 
+and the small decorative ribbon below the text. Do not include the leaf branches. 
+Export with a fully transparent background so it can blend naturally into a SPA interface."
+
+5) 2. Consejos y alternativas de diseño
+Usa un formato .png con transparencia REAL: El error actual es que la cuadrícula gris y blanca está "pintada" en el archivo.
+ Si en el futuro usas herramientas en línea para quitar fondos (como remove.bg o Adobe Express), 
+asegúrate de guardarlo estrictamente en formato PNG. El formato JPG no soporta transparencias 
+y te volverá a rellenar el fondo de blanco.
+
+Separar el texto del isotipo (la ilustración): Una práctica muy recomendada en desarrollo web es usar la imagen de la mujer
+ por un lado (con transparencia real) y escribir los textos "AFRO NATURAL" directamente con código HTML y CSS 
+(usando fuentes elegantes de Google Fonts como Cinzel o Playfair Display). Esto hace que tu web cargue mucho más rápido, 
+no pierda calidad al redimensionar la pantalla y sea perfecta para SEO.
+CLAVE
+Una vez tengo toda la app lista la subo a clause y le digo que me genere un promt c
+on el cual cualquier ai me crearia exactamente esta SPA, mejor
